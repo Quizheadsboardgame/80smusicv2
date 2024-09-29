@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>80s Music</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif; /* Standard font */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: transparent; /* Fully transparent background */
+            color: black; /* Standard text color */
+            text-align: center;
+        }
+
+        #quiz-container {
+            background-color: transparent; /* Fully transparent container */
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        #logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: white; /* Change the answer color to white */
+        }
+
+        #next-button {
+            background-color: white; /* Change background color to white */
+            color: black; /* Change text color to black for visibility */
+            border: 2px solid #ff9900; /* Optional: Add a border for better visibility */
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #next-button:hover {
+            background-color: #ffcc00; /* Change hover color for better effect */
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fadeOut {
+            animation: fadeOut 0.5s forwards;
+        }
+
+        .fadeIn {
+            animation: fadeIn 0.5s forwards;
+        }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <img id="logo" src="https://i.imgur.com/cyZ0Z21.png" alt="DC Comics Logo">
+    <h1>80s Music</h1>
+    <div id="question-container">
+        <div class="question" id="question">Loading question...</div>
+        <div class="answer" id="answer">Loading answer...</div>
+        <button id="next-button" onclick="nextQuestion()">Next Question</button>
+    </div>
+</div>
+
+<script>
+    // Question and answers data
+    const quizData = [
+        { question: "Candy Girl was an R&B song by which boy band?", answer: "New Edition" },
+        { question: "How many UK number 1 hits did Madness have in the 80s?", answer: "One; 'House of Fun' in 1982" },
+        { question: "Which 2 artists performed the song 'Up Where We Belong'?", answer: "Joe Cocker & Jennifer Warnes" },
+        { question: "Which American singer and teen icon is famous for her 1987 cover of 'I Think We're Alone Now'?", answer: "Tiffany" },
+        { question: "According to Phil Collins, how many hearts were there believing in just one mind?", answer: "2" },
+        { question: "What nationality are A-ha?", answer: "Norwegian" },
+        { question: "What was the title of Kylie Minogue’s first UK number 1 single?", answer: "I Should Be So Lucky" },
+        { question: "Whitney Houston’s 'I Wanna Dance with Somebody' was released in what year?", answer: "1987" },
+        { question: "'Love Song' was a duet between which two artists?", answer: "Madonna & Prince" },
+        { question: "Which Beatle spent nine days in a Tokyo prison in January 1980?", answer: "Paul McCartney" },
+        { question: "Which American singer released 'Edge of Seventeen'?", answer: "Stevie Nicks" },
+        { question: "Which iconic Simple Minds song plays during the opening and closing credits of 'The Breakfast Club'?", answer: "Don't You (Forget About Me)" },
+        { question: "Belinda Carlisle was the lead singer of which 80s girl band before achieving solo success?", answer: "The Go-Go's" },
+        { question: "According to Bon Jovi, where did Tommy used to work?", answer: "On the docks" },
+        { question: "What year was also the name of Prince’s 5th studio album?", answer: "1999" },
+        { question: "'Addicted to Love' was a single by which English rock singer?", answer: "Robert Palmer" },
+        { question: "In what year did Live Aid take place?", answer: "1985" },
+        { question: "Which fruit is featured on the cover for The Stone Roses’ self-titled album?", answer: "Lemon" },
+        { question: "Billy Ocean comes from which Caribbean country?", answer: "Trinidad & Tobago" },
+        { question: "Which band released the single 'Kokomo' which was featured in the movie 'Cocktail'?", answer: "The Beach Boys" },
+        { question: "What was the name of Madonna’s first UK number 1 album?", answer: "Like a Virgin" },
+        { question: "According to Sammy Hagar’s hit song, what can't he drive?", answer: "55" },
+        { question: "The Traveling Wilburys was a supergroup consisting of Bob Dylan, George Harrison, Jeff Lynne and which other two musicians?", answer: "Tom Petty & Roy Orbison" },
+        { question: "Which Duran Duran song opened with a sample of laughter from the keyboardist’s girlfriend?", answer: "Hungry Like the Wolf" },
+        { question: "What is the pencil-sketch animation technique used in the music video for A-Ha 'Take on Me' called?", answer: "Rotoscoping" },
+        { question: "'Loving would be easy if your colours were like my dreams' is a lyric from which Culture Club song?", answer: "Karma Chameleon" },
+        { question: "Who just called to say 'I love you'?", answer: "Stevie Wonder" },
+        { question: "Which singer released the song 'Bette Davis Eyes' in 1981?", answer: "Kim Carnes" },
+        { question: "What was U2’s debut album released in 1980 called?", answer: "Boy" },
+        { question: "Which boy band featured the twin brothers Matt and Luke Goss?", answer: "Goss" },
+        { question: "In which year in the 80s did Great Britain win the Eurovision Song Contest?", answer: "1981 as Bucks Fizz won performing 'Making Your Mind Up'" },
+        { question: "Who was the first act to perform at Live Aid?", answer: "Status Quo" },
+        { question: "What single did Band Aid release in 1984 to raise money for the famine in Ethiopia?", answer: "Do They Know It’s Christmas?" },
+        { question: "Slash was an original member of which rock band?", answer: "Guns N’ Roses" },
+        { question: "Brian Johnson was the lead for which band?", answer: "AC/DC" },
+        { question: "What did Billy Idol say it was a nice day for?", answer: "A white wedding" },
+        { question: "Which band released the 80s singles 'Atomic' and 'Call Me'?", answer: "Blondie" },
+        { question: "What was the first UK number 1 single for New Kids On The Block in 1989?", answer: "You Got It (The Right Stuff)" },
+        { question: "Which parody band had a hit single called 'Startrekkin'?", answer: "The Firm" },
+        { question: "'Walk This Way' was a collaboration between Aerosmith and which hip-hop group?", answer: "RUN DMC" },
+        { question: "Queen’s 9th studio album was the soundtrack to which movie released in 1980?", answer: "Flash Gordon" },
+        { question: "What is the first thing Rick Astley says he’d never do to you?", answer: "Give you up" },
+        { question: "Survivor’s 'Eye of the Tiger' was the theme song for which boxing movie?", answer: "Rocky III" },
+        { question: "Pet Shop Boys are a duo consisting of which 2 musicians?", answer: "Neil Tennant & Chris Lowe" },
+        { question: "What is the real name of The Police frontman Sting?", answer: "Gordon Sumner" },
+        { question: "Chuck D and Flavor Flav were members of which hip-hop group?", answer: "Public Enemy" },
+        { question: "In which city were The Housemartins formed?", answer: "Hull" },
+        { question: "According to the Beastie Boys, what right do you have to fight for?", answer: "Your right to party" },
+        { question: "In what year did Michael Jackson release his 7th studio album 'Bad'?", answer: "1987" },
+        { question: "What was the best-selling UK single of the 1980s?", answer: "'Do They Know It’s Christmas?' – Band Aid" }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    // Shuffle the quiz data
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    // Start the quiz
+    shuffle(quizData);
+    showQuestion();
+
+    function showQuestion() {
+        const questionContainer = document.getElementById("question");
+        const answerContainer = document.getElementById("answer");
+
+        questionContainer.innerText = quizData[currentQuestionIndex].question;
+        answerContainer.innerText = "Loading answer...";
+
+        // Fade in effect
+        answerContainer.classList.remove("fadeIn");
+        answerContainer.classList.add("fadeOut");
+
+        setTimeout(() => {
+            answerContainer.innerText = quizData[currentQuestionIndex].answer;
+            answerContainer.classList.remove("fadeOut");
+            answerContainer.classList.add("fadeIn");
+        }, 500);
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) {
+            showQuestion();
+        } else {
+            const questionContainer = document.getElementById("question");
+            const answerContainer = document.getElementById("answer");
+            questionContainer.innerText = "Thank you for playing!";
+            answerContainer.innerText = "";
+            document.getElementById("next-button").style.display = "none"; // Hide the next button
+        }
+    }
+</script>
+
+</body>
+</html>
